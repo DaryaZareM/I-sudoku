@@ -144,22 +144,67 @@ def forwadChecking(row,col,num,dt,table,colotrable):
     return domainTable
 
 #get domain table return MRV chosen cell
-def MRV(domainTable,table,maxlen):
+def MRV(domainTable,table,maxlen,numORColor):
     mincond=maxlen+1
-    mincell=[-1,0]
+    mincell=[]
+    resault=[]
     for i in range(n):
         for j in range(n):
             if table[i][j]==0:
                 if len(domainTable[i][j])<mincond:
-                    mincell=[i,j]
+                    mincell=[]
+                    mincell.append([i,j])
                     mincond=len(domainTable[i][j])
-    if mincell[0]==-1:
+                elif len(domainTable[i][j])==mincond:
+                     mincell.append([i,j])
+    if len(mincell)==0:
         return [-1,-1]
-    return mincell
+    if numORColor == 1:
+        resault=degreeNum(domainTable,table,mincell)
+    else:
+        resault=degreeColor(domainTable,table,mincell)
+    return resault
+def degreeNum(domaintable,table,candids):
+    n=len(table)
+    maxdegree=-1
+    maxcell =[]
+    for cell in candids:
+        counts=0
+        for i in range(n):
+            if table[i][cell[1]]==0 or table[cell[0]][i]==0:
+                counts+=1
+        if counts>maxdegree:
+            maxcell = cell
+            maxdegree=counts
+    return maxcell
 
+def degreeColor(domaintable,table,candids):
+    n=len(table)
+    maxdegree=-1
+    maxcell =[]
+    for cell in candids:
+        counts=0
+        row=cell[0]
+        col=cell[1]
+        if col>0: 
+            if  table[row][col-1]==0:
+                counts+=1
+        if col<n-1: 
+            if table[row][col+1]==0:
+                counts+=1
+        if row<n-1: 
+            if numtable[row+1][col]==0:
+                counts+=1
+        if row>0: 
+            if numtable[row-1][col]==0:
+                counts+=1
+        if counts>maxdegree:
+            maxcell = cell
+            maxdegree=counts
+    return maxcell
 
 def co(table,colortable,colordomainTable,m):
-    row,col = MRV(colordomainTable,colortable,m)
+    row,col = MRV(colordomainTable,colortable,m,0)
     if row == -1:
         #colors filled
         return 1
@@ -173,7 +218,7 @@ def co(table,colortable,colordomainTable,m):
     return 0
 
 def f(table,domainTable,colortable,colordomainTable,m,n):
-    row,col = MRV(domainTable,table,n)
+    row,col = MRV(domainTable,table,n,1)
     if row == -1:
         # nums filled
         if co(table,colortable,colordomainTable,m)!= 0:
@@ -215,8 +260,6 @@ def sazegar_kaman(row,col,colortable,colordomainTable,numtable):
             except ValueError:
                 break
     return colordomainTable
-
-
 
 if __name__=="__main__":
     m,n = map(int,input().split())
@@ -278,10 +321,6 @@ if __name__=="__main__":
                             numdomainTable[k][j].remove(temp)
                         except ValueError:
                             break
-
-
-
-
 
     #سازگار کمان رنگی
     for i in range(n):
