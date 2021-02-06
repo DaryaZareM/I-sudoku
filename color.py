@@ -119,21 +119,21 @@ def forwadChecking(row,col,num,dt,table):
 #get domain table return MRV chosen cell
 def MRV(domainTable,table,maxlen):
     mincond=maxlen+1
-    mincell=[maxlen+1,0]
+    mincell=[-1,0]
     for i in range(n):
         for j in range(n):
             if table[i][j]==0:
                 if len(domainTable[i][j])<mincond:
                     mincell=[i,j]
                     mincond=len(domainTable[i][j])
-    if mincell[0]==maxlen+1:
-        return [maxlen+1,maxlen+1]
+    if mincell[0]==-1:
+        return [-1,-1]
     return mincell
 
 
 def co(table,colortable,colordomainTable,m):
     row,col = MRV(colordomainTable,colortable,m)
-    if row == m+1:
+    if row == -1:
         #colors filled
         return 1
     for assinNum in colordomainTable[row][col]:
@@ -147,7 +147,7 @@ def co(table,colortable,colordomainTable,m):
 
 def f(table,domainTable,colortable,colordomainTable,m,n):
     row,col = MRV(domainTable,table,n)
-    if row == n+1:
+    if row == -1:
         # nums filled
         if co(table,colortable,colordomainTable,m)!= 0:
                 return 1
