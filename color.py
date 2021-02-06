@@ -98,7 +98,7 @@ def sazegar_konande_yek_cell(row,col,colortable,cdt,numtable,m):
         if (colortable[row+1][col]==0 and len(colordomainTable[row+1][col])==0) or (colortable[row+1][col]==0 and len(colordomainTable[row+1][col])==0):
             return 0
     return colordomainTable
-def forwadChecking(row,col,num,dt,table):
+def forwadChecking(row,col,num,dt,table,colotrable):
     domainTable = copy.deepcopy(dt)
     for i in range(n):
         while True:
@@ -114,6 +114,33 @@ def forwadChecking(row,col,num,dt,table):
 
         if (table[i][col]==0 and len(domainTable[i][col])==0) or (table[row][i]==0 and len(domainTable[row][i])==0):
             return 0
+    #if tow side cell has color and num:
+    if numtable[row][col]>0 and colortable[row][col]>0:
+        if col>0: 
+            if  numtable[row][col-1]>0 and colortable[row][col-1]>0:
+                if (numtable[row][col] > numtable[row][col-1] and colortable[row][col]> colortable[row][col-1]):
+                    return 0
+                elif (numtable[row][col] < numtable[row][col-1] and colortable[row][col] < colortable[row][col-1]):
+                    return 0
+        if col<n-1: 
+            if numtable[row][col+1]>0 and colortable[row][col+1]>0:
+                if (numtable[row][col] > numtable[row][col+1] and colortable[row][col] > colortable[row][col+1]):
+                    return 0    
+                elif (numtable[row][col] < numtable[row][col+1] and colortable[row][col] < colortable[row][col+1]):
+                    return 0
+        if row<n-1: 
+            if numtable[row+1][col]>0 and colortable[row+1][col]>0:
+                if (numtable[row][col] > numtable[row+1][col] and colortable[row][col] > colortable[row+1][col]):
+                    return 0    
+                elif (numtable[row][col] < numtable[row+1][col] and colortable[row][col] < colortable[row+1][col]):
+                    return 0
+        if row>0: 
+            if numtable[row-1][col]>0 and colortable[row-1][col]>0:
+                if (numtable[row][col] > numtable[row-1][col] and colortable[row][col] > colortable[row-1][col]):
+                    return 0    
+                elif (numtable[row][col] < numtable[row-1][col] and colortable[row][col] < colortable[row-1][col]):
+                    return 0
+        
     return domainTable
 
 #get domain table return MRV chosen cell
@@ -154,7 +181,7 @@ def f(table,domainTable,colortable,colordomainTable,m,n):
         return 0
     for assinNum in domainTable[row][col]:
         table[row][col] = assinNum
-        updated = forwadChecking(row,col,assinNum,domainTable,table)
+        updated = forwadChecking(row,col,assinNum,domainTable,table,colortable)
         if (updated!=0):
             if f(table,updated,colortable,colordomainTable,m,n)!= 0:
                 return 1
