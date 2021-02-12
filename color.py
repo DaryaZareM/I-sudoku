@@ -264,10 +264,12 @@ def sazegar_kaman(row,col,colortable,colordomainTable,numtable):
 if __name__=="__main__":
     m,n = map(int,input().split())
     colors = dict()
+    reversColors=dict()
 
     temp=input().split()
     for i in range(m):
         colors[temp[i]]=i+1
+        reversColors[i+1]=temp[i]
     colors['0']=0
 
     #initialization
@@ -331,5 +333,10 @@ if __name__=="__main__":
     
     f(numtable,numdomainTable,colortable,colordomainTable,m,n)
 
-    print(numtable)
-    print(colortable)
+    #print:
+    print('---+'*n)
+    for i in range(n):
+        for j in range(n):
+            print(numtable[i][j],end='')
+            print(reversColors[colortable[i][j]],end=' |')
+        print('\n'+'---+'*n)
